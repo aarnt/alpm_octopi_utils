@@ -1,30 +1,26 @@
-pkgname=('libalpm_octopi_utils')
+pkgname=alpm_octopi_utils
 pkgver=1.0.0
 pkgrel=1
+_commit=6d93c06d0feec0df7e5958c33df281eda91a6700
 pkgdesc="Alpm utils for Octopi"
+url="https://octopiproject.wordpress.com/"
 arch=('i686' 'x86_64')
-url="http://octopiproject.wordpress.com"
-license=('GPL2')
-install=$pkgname.install
+license=('GPL3')
 makedepends=('vala')
-depends=()
-optdepends=()
-provides=('libalpm_octopi_utils')
-md5sums=()
-
+source=("https://github.com/aarnt/${pkgname}/archive/${_commit}.zip")
+md5sums=('e08da8f28da2bdaae0f267653aaec009')
+         
 build() {
-    cpucount=$(grep -c processor /proc/cpuinfo 2>/dev/null)
-    jc=$((${cpucount:-1}))
-
-    #cd "$srcdir"  
-    msg "Starting build..." alpm_octopi_utils.h
-
-    cd $startdir
-    make -j $jc
+   cd ${pkgname}-${_commit}
+   
+   make
 }
 
-package_libalpm_octopi_utils() {   
-    install -D -m755 $startdir/src/$pkgname.so ${pkgdir}/usr/lib/$pkgname.so
-    install -D -m644 $startdir/src/$pkgname.pc ${pkgdir}/usr/lib/pkgconfig/$pkgname.pc
-    install -D -m644 $startdir/src/alpm_octopi_utils.h ${pkgdir}/usr/include/alpm_octopi_utils.h   
+package() {
+   cd ${pkgname}-${_commit}
+   
+   install -D -m755 src/libalpm_octopi_utils.so ${pkgdir}/usr/lib/libalpm_octopi_utils.so
+   install -D -m644 src/libalpm_octopi_utils.pc ${pkgdir}/usr/lib/pkgconfig/libalpm_octopi_utils.pc
+   install -D -m644 src/alpm_octopi_utils.h ${pkgdir}/usr/include/alpm_octopi_utils.h   
+
 }
