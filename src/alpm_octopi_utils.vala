@@ -26,8 +26,8 @@ int alpm_pkg_compare_name (Alpm.Package pkg_a, Alpm.Package pkg_b) {
 public class AlpmUtils {
 	public string conf_file_path;
 	public Alpm.Handle alpm_handle;
-	public Alpm.List<string> holdpkgs;
-	public Alpm.List<string> syncfirsts;
+	public Alpm.List<unowned string> holdpkgs;
+	public Alpm.List<unowned string> syncfirsts;
 
 	public AlpmUtils (string conf_file_path) {
 		this.conf_file_path = conf_file_path;
@@ -202,7 +202,7 @@ public class AlpmUtils {
 
 	public Alpm.List<unowned Alpm.Package> get_updates () {
 			Alpm.List<unowned Alpm.Package> results = null;
-			unowned Alpm.List<string> list = syncfirsts;
+			unowned Alpm.List<unowned string> list = syncfirsts;
 			while (list != null) {
 				unowned string name = list.data;
 				unowned Alpm.Package? pkg = Alpm.find_satisfier (alpm_handle.localdb.pkgcache, name);

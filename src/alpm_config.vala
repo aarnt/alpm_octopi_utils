@@ -53,14 +53,14 @@ class AlpmConfig {
 	public double deltaratio;
 	public int usesyslog;
 	public int checkspace;
-	public Alpm.List<string> cachedirs;
-	public Alpm.List<string> hookdirs;
-	public Alpm.List<string> ignoregroups;
-	public Alpm.List<string> ignorepkgs;
-	public Alpm.List<string> noextracts;
-	public Alpm.List<string> noupgrades;
-	public Alpm.List<string> holdpkgs;
-	public Alpm.List<string> syncfirsts;
+	public Alpm.List<unowned string> cachedirs;
+	public Alpm.List<unowned string> hookdirs;
+	public Alpm.List<unowned string> ignoregroups;
+	public Alpm.List<unowned string> ignorepkgs;
+	public Alpm.List<unowned string> noextracts;
+	public Alpm.List<unowned string> noupgrades;
+	public Alpm.List<unowned string> holdpkgs;
+	public Alpm.List<unowned string> syncfirsts;
 	public Alpm.Signature.Level siglevel;
 	public Alpm.Signature.Level localfilesiglevel;
 	public Alpm.Signature.Level remotefilesiglevel;
@@ -148,7 +148,7 @@ class AlpmConfig {
 		handle.remotefilesiglevel = remotefilesiglevel;
 		handle.cachedirs = cachedirs;
 		// add hook directories 1-by-1 to avoid overwriting the system directory
-		unowned Alpm.List<string> list = hookdirs;
+		unowned Alpm.List<unowned string> list = hookdirs;
 		while (list != null) {
 			unowned string hookdir = list.data;
 			handle.add_hookdir (hookdir);

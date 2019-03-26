@@ -1,5 +1,5 @@
 pkgname=alpm_octopi_utils
-pkgver=1.0.0
+pkgver=1.0.1
 pkgrel=1
 _commit=6d93c06d0feec0df7e5958c33df281eda91a6700
 pkgdesc="Alpm utils for Octopi"
