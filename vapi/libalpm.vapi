@@ -1,7 +1,7 @@
 /*
  *  Vala bindings for libalpm
  *
- *  Copyright (C) 2014-2016 Guillaume Benoit <guillaume@manjaro.org>
+ *  Copyright (C) 2014-2019 Guillaume Benoit <guillaume@manjaro.org>
  *  Copyright (c) 2011 Rémy Oudompheng <remy@archlinux.org>
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -148,11 +148,6 @@ namespace Alpm {
 		public int add_assumeinstalled(Depend dep);
 		[CCode (cname = "alpm_option_remove_assumeinstalled")]
 		public int remove_assumeinstalled(Depend dep);
-
-		public double deltaratio {
-			[CCode (cname = "alpm_option_get_deltaratio")] get;
-			[CCode (cname = "alpm_option_set_deltaratio")] set;
-		}
 
 		public int checkspace {
 			[CCode (cname = "alpm_option_get_checkspace")] get;
@@ -457,17 +452,11 @@ namespace Alpm {
 		public unowned Alpm.List<unowned Depend?> provides {
 			[CCode (cname = "alpm_pkg_get_provides")] get;
 		}
-		public unowned Alpm.List<unowned string?> deltas {
-			[CCode (cname = "alpm_pkg_get_deltas")] get;
-		}
 		public unowned Alpm.List<unowned Depend?> replaces {
 			[CCode (cname = "alpm_pkg_get_replaces")] get;
 		}
 		public unowned FileList files {
 			[CCode (cname = "alpm_pkg_get_files")] get;
-		}
-		public unowned Alpm.List<unowned string?> unused_deltas {
-			[CCode (cname = "alpm_pkg_unused_deltas")] get;
 		}
 		public unowned Alpm.List<unowned Backup?> backups {
 			[CCode (cname = "alpm_pkg_get_backup")] get;
@@ -530,7 +519,7 @@ namespace Alpm {
 		public Alpm.List<string?> compute_requiredby();
 		public Alpm.List<string?> compute_optionalfor();
 
-		[CCode (cname = "alpm_sync_newversion")]
+		[CCode (cname = "alpm_sync_get_new_version")]
 		public unowned Package? sync_newversion(Alpm.List<unowned DB> dbs);
 
 		public int check_pgp_signature(out SigList siglist);
@@ -616,24 +605,6 @@ namespace Alpm {
 	public class Group {
 		public string name;
 		public unowned Alpm.List<unowned Package?> packages;
-	}
-
-	/** Package upgrade delta */
-	[CCode (cname = "alpm_delta_t", has_type_id = false)]
-	[Compact]
-	public class Delta {
-		/** filename of the delta patch */
-		public string delta;
-		/** md5sum of the delta file */
-		public string delta_md5;
-		/** filename of the 'before' file */
-		public string from;
-		/** filename of the 'after' file */
-		public string to;
-		/** filesize of the delta file */
-		public uint64 delta_size;
-		/** download filesize of the delta file */
-		public uint64 download_size;
 	}
 
 	/** File in a package */
@@ -804,21 +775,6 @@ namespace Alpm {
 			LOAD_START,
 			/** Target package is finished loading. */
 			LOAD_DONE,
-			/** Target delta's integrity will be checked. */
-			DELTA_INTEGRITY_START,
-			/** Target delta's integrity was checked. */
-			DELTA_INTEGRITY_DONE,
-			/** Deltas will be applied to packages. */
-			DELTA_PATCHES_START,
-			/** Deltas were applied to packages. */
-			DELTA_PATCHES_DONE,
-			/** Delta patch will be applied to target package; See
-			* DeltaPatch for arguments. */
-			DELTA_PATCH_START,
-			/** Delta patch was applied to target package. */
-			DELTA_PATCH_DONE,
-			/** Delta patch failed to apply to target package. */
-			DELTA_PATCH_FAILED,
 			/** Scriptlet has printed information; See ScriptletInfo for
 			* arguments. */
 			SCRIPTLET_INFO,
@@ -899,15 +855,6 @@ namespace Alpm {
 			public unowned Package pkg;
 			/** Optdep being removed. */
 			public unowned Depend optdep;
-		}
-
-		[CCode (cname = "alpm_event_delta_patch_t", has_type_id = false)]
-		[Compact]
-		public class DeltaPatch {
-			/** Type of event. */
-			public Type type;
-			/** Delta info */
-			public Delta delta;
 		}
 
 		[CCode (cname = "alpm_event_scriptlet_info_t", has_type_id = false)]
@@ -1008,9 +955,6 @@ namespace Alpm {
 			public unowned Package optdep_removal_pkg;
 			[CCode (cname = "optdep_removal.optdep")]
 			public unowned Depend optdep_removal_optdep;
-			// DeltaPatch delta_patch;
-			[CCode (cname = "delta_patch.delta")]
-			public Delta delta_patch_delta;
 			// ScriptletInfo scriptlet_info;
 			[CCode (cname = "scriptlet_info.line")]
 			public unowned string scriptlet_info_line;
@@ -1358,9 +1302,6 @@ namespace Alpm {
 		/* Signatures */
 		SIG_MISSING,
 		SIG_INVALID,
-		/* Deltas */
-		DLT_INVALID,
-		DLT_PATCHFAILED,
 		/* Dependencies */
 		UNSATISFIED_DEPS,
 		CONFLICTING_DEPS,

@@ -1,23 +1,22 @@
 pkgname=alpm_octopi_utils
-pkgver=1.0.1
+pkgver=1.0.2
 pkgrel=1
-_commit=6d93c06d0feec0df7e5958c33df281eda91a6700
 pkgdesc="Alpm utils for Octopi"
 url="https://octopiproject.wordpress.com/"
 arch=('i686' 'x86_64')
 license=('GPL3')
 makedepends=('vala')
-source=("https://github.com/aarnt/${pkgname}/archive/${_commit}.zip")
-md5sums=('e08da8f28da2bdaae0f267653aaec009')
+source=("git+https://github.com/aarnt/alpm_octopi_utils.git")
+md5sums=('SKIP')
          
 build() {
-   cd ${pkgname}-${_commit}
+   cd ${pkgname}
    
    make
 }
 
 package() {
-   cd ${pkgname}-${_commit}
+   cd ${pkgname}
    
    install -D -m755 src/libalpm_octopi_utils.so ${pkgdir}/usr/lib/libalpm_octopi_utils.so
    install -D -m644 src/libalpm_octopi_utils.pc ${pkgdir}/usr/lib/pkgconfig/libalpm_octopi_utils.pc

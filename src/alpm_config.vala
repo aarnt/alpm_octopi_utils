@@ -1,7 +1,7 @@
 /*
  *  alpm_config
  *
- *  Copyright (C) 2014-2016 Guillaume Benoit <guillaume@manjaro.org>
+ *  Copyright (C) 2014-2019 Guillaume Benoit <guillaume@manjaro.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -50,7 +50,6 @@ class AlpmConfig {
 	public string? logfile;
 	public string? gpgdir;
 	public string? arch;
-	public double deltaratio;
 	public int usesyslog;
 	public int checkspace;
 	public Alpm.List<unowned string> cachedirs;
@@ -86,7 +85,6 @@ class AlpmConfig {
 		syncfirsts.free_inner (GLib.free);
 		usesyslog = 0;
 		checkspace = 0;
-		deltaratio = 0.7;
 		siglevel = Alpm.Signature.Level.PACKAGE | Alpm.Signature.Level.PACKAGE_OPTIONAL | Alpm.Signature.Level.DATABASE | Alpm.Signature.Level.DATABASE_OPTIONAL;
 		localfilesiglevel = Alpm.Signature.Level.USE_DEFAULT;
 		remotefilesiglevel = Alpm.Signature.Level.USE_DEFAULT;
@@ -138,7 +136,6 @@ class AlpmConfig {
 		handle.logfile = logfile;
 		handle.gpgdir = gpgdir;
 		handle.arch = arch;
-		handle.deltaratio = deltaratio;
 		handle.usesyslog = usesyslog;
 		handle.checkspace = checkspace;
 		handle.defaultsiglevel = siglevel;
@@ -238,8 +235,6 @@ class AlpmConfig {
 							} else {
 								arch = val;
 							}
-						} else if (key == "UseDelta") {
-							deltaratio = double.parse (val);
 						} else if (key == "UseSysLog") {
 							usesyslog = 1;
 						} else if (key == "CheckSpace") {
