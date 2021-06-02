@@ -362,7 +362,7 @@ namespace Alpm {
 
 		public unowned Package? get_pkg(string name);
 		public unowned Group? get_group(string name);
-		public int search(Alpm.List<unowned string> needles, Alpm.List<unowned Package?> ret);
+		public int search(Alpm.List<unowned string> needles, out Alpm.List<unowned Package?> ret);
 
 		public int check_pgp_signature(out SigList siglist);
 	}

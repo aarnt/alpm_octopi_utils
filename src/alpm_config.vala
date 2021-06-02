@@ -231,9 +231,9 @@ class AlpmConfig {
 							logfile = val;
 						} else if (key == "Architecture") {
 							if (val == "auto") {
-							  architectures.append (Posix.utsname().machine);
+								architectures.append (Posix.utsname().machine);
 							} else {
-							  architectures.append (val);
+								architectures.append (val);
 							}
 						} else if (key == "UseSysLog") {
 							usesyslog = 1;

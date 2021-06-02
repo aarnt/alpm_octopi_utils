@@ -68,15 +68,15 @@ public class AlpmUtils {
 		foreach (unowned string part in splitted) {
 			needles.append (part);
 		}
-		alpm_handle.localdb.search (needles, results);
+		alpm_handle.localdb.search (needles, out results);
 		unowned Alpm.List<unowned Alpm.DB> list = alpm_handle.syncdbs;
 		while (list != null) {
 			unowned Alpm.DB db = list.data;
 			if (syncpkgs.length () == 0) {
-				 db.search (needles, syncpkgs);
+				db.search (needles, out syncpkgs);
 			} else {
 				//syncpkgs.join (db.search (needles).diff (syncpkgs, (Alpm.List.CompareFunc) alpm_pkg_compare_name));
-				db.search (needles, ret);
+				db.search (needles, out ret);
 				syncpkgs.join (ret.copy());
 			}
 			list = list.next;
