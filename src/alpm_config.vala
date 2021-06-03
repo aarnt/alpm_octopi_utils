@@ -49,7 +49,7 @@ class AlpmConfig {
 	public string? dbpath;
 	public string? logfile;
 	public string? gpgdir;
-	public string? arch;
+	public Alpm.List<unowned string> architectures;
 	public int usesyslog;
 	public int checkspace;
 	public Alpm.List<unowned string> cachedirs;
@@ -120,8 +120,8 @@ class AlpmConfig {
 			// rootdir is defined because it contains configuration data.
 			gpgdir = "/etc/pacman.d/gnupg/";
 		}
-		if (arch == null) {
-			arch = Posix.utsname().machine;
+		if (architectures.length () == 0) {
+			architectures.append (Posix.utsname().machine);
 		}
 	}
 
@@ -135,7 +135,7 @@ class AlpmConfig {
 		// define options
 		handle.logfile = logfile;
 		handle.gpgdir = gpgdir;
-		handle.arch = arch;
+		handle.architectures = architectures;
 		handle.usesyslog = usesyslog;
 		handle.checkspace = checkspace;
 		handle.defaultsiglevel = siglevel;
@@ -160,7 +160,7 @@ class AlpmConfig {
 			repo.siglevel = merge_siglevel (siglevel, repo.siglevel, repo.siglevel_mask);
 			unowned Alpm.DB db = handle.register_syncdb (repo.name, repo.siglevel);
 			foreach (unowned string url in repo.urls) {
-				db.add_server (url.replace ("$repo", repo.name).replace ("$arch", handle.arch));
+				db.add_server (url.replace ("$repo", repo.name).replace ("$arch", handle.architectures.nth(0).data));
 			}
 			if (repo.usage == 0) {
 				db.usage = Alpm.DB.Usage.ALL;
@@ -231,9 +231,9 @@ class AlpmConfig {
 							logfile = val;
 						} else if (key == "Architecture") {
 							if (val == "auto") {
-								arch = Posix.utsname ().machine;
+								architectures.append (Posix.utsname().machine);
 							} else {
-								arch = val;
+								architectures.append (val);
 							}
 						} else if (key == "UseSysLog") {
 							usesyslog = 1;

@@ -61,20 +61,23 @@ public class AlpmUtils {
 
 	public Alpm.List<unowned Alpm.Package> search_all_dbs (string search_string) {
 		Alpm.List<unowned Alpm.Package> syncpkgs = null;
+		Alpm.List<unowned Alpm.Package> results = null;
+		Alpm.List<unowned Alpm.Package> ret = null;
 		Alpm.List<unowned string> needles = null;
 		string[] splitted = search_string.split (" ");
 		foreach (unowned string part in splitted) {
 			needles.append (part);
 		}
-		Alpm.List<unowned Alpm.Package> results = alpm_handle.localdb.search (needles);
+		alpm_handle.localdb.search (needles, out results);
 		unowned Alpm.List<unowned Alpm.DB> list = alpm_handle.syncdbs;
 		while (list != null) {
 			unowned Alpm.DB db = list.data;
 			if (syncpkgs.length () == 0) {
-				syncpkgs = db.search (needles);
+				db.search (needles, out syncpkgs);
 			} else {
 				//syncpkgs.join (db.search (needles).diff (syncpkgs, (Alpm.List.CompareFunc) alpm_pkg_compare_name));
-				syncpkgs.join (db.search (needles));
+				db.search (needles, out ret);
+				syncpkgs.join (ret.copy());
 			}
 			list = list.next;
 		}
