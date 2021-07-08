@@ -20,13 +20,13 @@ clean:
 	cd src && make clean
 
 install:
-	install -Dm644 src/alpm_octopi_utils.h $(includedir)/alpm_octopi_utils.h
-	install -Dm644 src/alpm_octopi_utils.vapi $(datadir)/vala/vapi/alpm_octopi_utils.vapi
-	install -Dm755 src/libalpm_octopi_utils.so $(libdir)/libalpm_octopi_utils.so
-	install -Dm644 src/libalpm_octopi_utils.pc $(libdir)/pkgconfig/libalpm_octopi_utils.pc
+	install -Dm644 src/alpm_octopi_utils.h $(DESTDIR)$(includedir)/alpm_octopi_utils.h
+	install -Dm644 src/alpm_octopi_utils.vapi $(DESTDIR)$(datadir)/vala/vapi/alpm_octopi_utils.vapi
+	install -Dm755 src/libalpm_octopi_utils.so $(DESTDIR)$(libdir)/libalpm_octopi_utils.so
+	install -Dm644 src/libalpm_octopi_utils.pc $(DESTDIR)$(libdir)/pkgconfig/libalpm_octopi_utils.pc
 
 uninstall:
-	rm -f $(includedir)/alpm_octopi_utils.h
-	rm -f $(datadir)/vala/vapi/alpm_octopi_utils.vapi
-	rm -f $(libdir)/libalpm_octopi_utils.so
-	rm -f $(libdir)/pkgconfig/libalpm_octopi_utils.pc
+	rm -f $(DESTDIR)$(includedir)/alpm_octopi_utils.h
+	rm -f $(DESTDIR)$(datadir)/vala/vapi/alpm_octopi_utils.vapi
+	rm -f $(DESTDIR)$(libdir)/libalpm_octopi_utils.so
+	rm -f $(DESTDIR)$(libdir)/pkgconfig/libalpm_octopi_utils.pc
